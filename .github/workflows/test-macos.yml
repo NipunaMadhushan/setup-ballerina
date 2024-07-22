@@ -23,7 +23,7 @@ jobs:
           fi
           )" >> $GITHUB_ENV
       - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@main
+      - uses: NipunaMadhushan/setup-ballerina@test-nightly
         name: Test the action.
         with:
           version: ${{ env.balVersion }}
@@ -35,7 +35,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@main
+      - uses: NipunaMadhushan/setup-ballerina@test-nightly
         name: Test the action.
         with:
           version: nightly
