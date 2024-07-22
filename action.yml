@@ -35,6 +35,7 @@ runs:
       if: steps.cache-dist.outputs.cache-hit != 'true'
       run: |
           set -x
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "Windows runner detected"
             if [[ $BALLERINA_VERSION == 'nightly' ]]; then
