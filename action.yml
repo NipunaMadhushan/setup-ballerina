@@ -8,6 +8,11 @@ inputs:
     description: "Ballerina Version"
     required: true
     default: 2201.9.2
+  github-token:
+    description: 'GitHub token'
+    default: ${{ github.token }}
+    required: false
+
 runs:
   using: "composite"
   steps:
@@ -35,6 +40,7 @@ runs:
       if: steps.cache-dist.outputs.cache-hit != 'true'
       run: |
           set -x
+          GITHUB_TOKEN=${{ inputs.github-token }}
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "Windows runner detected"
             if [[ $BALLERINA_VERSION == 'nightly' ]]; then
@@ -88,8 +94,6 @@ runs:
             fi
           fi
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Install Ballerina
       run: |
