@@ -20,6 +20,7 @@ runs:
             BALLERINA_VERSION=${{ inputs.version }}
           fi
           echo "::set-output name=version::$BALLERINA_VERSION"
+          echo BALLERINA_VERSION=$BALLERINA_VERSION >> $GITHUB_ENV
       shell: bash
 
     - name: Cache Restore
@@ -36,7 +37,8 @@ runs:
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "Windows runner detected"
-            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+            if [[ $BALLERINA_VERSION == 'nightly' ]]; then
+              DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
               echo "Using nightly build"
               ARTIFACT_NAME="Windows Installer msi"
               GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -52,7 +54,8 @@ runs:
             fi
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "MacOS runner detected"
-            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+            if [[ $BALLERINA_VERSION == 'nightly' ]]; then
+              DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
               echo "Using nightly build"
               ARTIFACT_NAME="MacOS Installer pkg"
               GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -68,7 +71,8 @@ runs:
             fi
           else
             echo "Ubuntu runner detected"
-            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+            if [[ $BALLERINA_VERSION == 'nightly' ]]; then
+              DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
               echo "Using nightly build"
               ARTIFACT_NAME="Linux Installer deb"
               GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
