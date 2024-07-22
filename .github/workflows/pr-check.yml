@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Test the action.
-        uses: ./.github/actions/dynamic-action
+        uses: ./.github/scripts/dynamic-action
         with:
           version: nightly-2201.9.x
       - run: bal version
