@@ -103,7 +103,7 @@ runs:
           INSTALLER_PATH=$(dir ballerina-*-windows-x64.msi)
           msiexec //i $INSTALLER_PATH //qn
           echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
-          cmd $env:Path += ";C:\Program Files\Ballerina\bin"
+          powershell ${GITHUB_ACTION_PATH}/updatepath.ps1
         elif [[ $OSTYPE == 'darwin'* ]]; then
           echo "macos runner detected"
           INSTALLER_PATH=$(ls ./ballerina-*-macos-x64.pkg)
