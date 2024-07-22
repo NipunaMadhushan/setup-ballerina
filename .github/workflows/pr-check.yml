@@ -1,4 +1,4 @@
-name: Test Ubuntu
+name: PR Check Ubuntu
 on:
   push:
   pull_request:
