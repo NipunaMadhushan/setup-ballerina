@@ -97,26 +97,29 @@ runs:
 
     - name: Install Ballerina
       run: |
-          set -x
-          if [[ $OSTYPE == 'msys'* ]]; then
-            echo "windows runner detected"
-            msiexec //i ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi //qn
-            echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
-            powershell ${GITHUB_ACTION_PATH}/updatepath.ps1    
-          elif [[ $OSTYPE == 'darwin'* ]]; then
-            echo "macos runner detected"
-            sudo installer -pkg ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg -target /Library
-            echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
-            echo "/Library/Ballerina/bin" >> $GITHUB_PATH
+        set -x
+        if [[ $OSTYPE == 'msys'* ]]; then
+          echo "windows runner detected"
+          INSTALLER_PATH=$(dir ballerina-*-windows-x64.msi)
+          msiexec //i $INSTALLER_PATH //qn
+          echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
+          cmd $env:Path += ";C:\Program Files\Ballerina\bin"
+        elif [[ $OSTYPE == 'darwin'* ]]; then
+          echo "macos runner detected"
+          INSTALLER_PATH=$(ls ./ballerina-*-macos-x64.pkg)
+          sudo installer -pkg $INSTALLER_PATH -target /Library
+          echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
+          echo "/Library/Ballerina/bin" >> $GITHUB_PATH
+        else
+          echo "ubuntu runner detected" 
+          INSTALLER_PATH=$(ls ./ballerina-*-linux-x64.deb)
+          if [ "$(id --user)" -eq "0" ]; then
+            sudocmd=""
           else
-            echo "ubuntu runner detected" 
-            if [ "$(id --user)" -eq "0" ]; then
-              sudocmd=""
-            else
-              sudocmd="sudo"
-            fi
-            $sudocmd dpkg -i "ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb"
-            echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
-            echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
-          fi 
+            sudocmd="sudo"
+          fi
+          $sudocmd dpkg -i $INSTALLER_PATH
+          echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
+          echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
+        fi
       shell: bash
