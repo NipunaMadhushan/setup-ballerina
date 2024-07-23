@@ -124,6 +124,12 @@ runs:
         fi
       shell: bash
 
+    - name: Verify installer file
+      run: |
+        set -x
+        ls
+      shell: bash
+
     - name: Remove downloaded files
       run: |
         set -x
