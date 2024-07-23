@@ -123,3 +123,24 @@ runs:
           echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
         fi
       shell: bash
+
+    - name: Remove downloaded files
+      run: |
+        set -x
+        if [[ $OSTYPE == 'msys'* ]]; then
+          rm -f ballerina-*-windows-x64.msi
+          rm -f artifact.zip
+        elif [[ $OSTYPE == 'darwin'* ]]; then
+          rm -f ballerina-*-macos-x64.pkg
+          rm -f artifact.zip
+        else
+          rm -f ballerina-*-linux-x64.deb
+          rm -f artifact.zip
+        fi
+      shell: bash
+
+    - name: Verify installer removal
+      run: |
+        set -x
+        ls
+      shell: bash
