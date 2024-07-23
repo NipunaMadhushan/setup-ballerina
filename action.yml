@@ -124,12 +124,6 @@ runs:
         fi
       shell: bash
 
-    - name: Verify installer file
-      run: |
-        set -x
-        ls
-      shell: bash
-
     - name: Remove downloaded files
       run: |
         set -x
@@ -137,10 +131,4 @@ runs:
         rm -f ballerina-*-macos-x64.pkg
         rm -f ballerina-*-linux-x64.deb
         rm -f artifact.zip
-      shell: bash
-
-    - name: Verify installer removal
-      run: |
-        set -x
-        ls
       shell: bash
