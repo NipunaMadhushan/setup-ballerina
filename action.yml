@@ -133,16 +133,10 @@ runs:
     - name: Remove downloaded files
       run: |
         set -x
-        if [[ $OSTYPE == 'msys'* ]]; then
-          rm -f ballerina-*-windows-x64.msi
-          rm -f artifact.zip
-        elif [[ $OSTYPE == 'darwin'* ]]; then
-          rm -f ballerina-*-macos-x64.pkg
-          rm -f artifact.zip
-        else
-          rm -f ballerina-*-linux-x64.deb
-          rm -f artifact.zip
-        fi
+        rm -f ballerina-*-windows-x64.msi
+        rm -f ballerina-*-macos-x64.pkg
+        rm -f ballerina-*-linux-x64.deb
+        rm -f artifact.zip
       shell: bash
 
     - name: Verify installer removal
